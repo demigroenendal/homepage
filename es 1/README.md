@@ -1,2 +1,234 @@
-# homepage
-Pagina personale con esercizi
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Demi Groenendal Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto+Slab:wght@400&display=swap" rel="stylesheet">
+<style>
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  background: black;
+  transition: background 2s ease;
+}
+
+/* luce morbida animata */
+#light {
+  position: fixed;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+  animation: lightMove 5s infinite linear;
+  z-index: 1;
+}
+
+@keyframes lightMove {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+#bgOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  background: rgba(255,255,255,0);
+  transition: background 0.2s ease;
+  z-index: 0;
+}
+
+#bgLogo {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 700px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  color: white;
+  opacity: 0.05;
+  z-index: 0;
+  pointer-events: none;
+  transition: text-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+/* Home Section */
+#home {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  color: white;
+}
+
+#name {
+  font-size: 48px;
+  margin: 0 0 20px 0;
+  opacity: 1;
+  animation: fadeName 3s infinite alternate;
+}
+
+@keyframes fadeName {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+
+#portfolio {
+  font-size: 28px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s ease;
+}
+
+#portfolio:hover { transform: scale(1.05); }
+
+#instagram {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  text-decoration: none;
+  color: white;
+  z-index: 999;
+  transition: color 1s ease, transform 0.3s ease;
+}
+
+#instagram:hover { transform: translateX(-50%) scale(1.1); }
+
+/* Esercizi Section */
+#exercises {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  z-index: 2;
+  position: relative;
+}
+
+.exercise-item {
+  width: 200px;
+  height: 60px;
+  background: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 20px;
+  color: white;
+  text-decoration: none;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.exercise-item:hover {
+  transform: scale(1.1);
+  background: #555;
+}
+</style>
+</head>
+<body>
+
+<div id="light"></div>
+<div id="bgOverlay"></div>
+<div id="bgLogo">DG</div>
+
+<!-- Home -->
+<section id="home">
+  <div id="name">Demi Groenendal</div>
+  <a id="portfolio">Portfolio</a>
+</section>
+
+<a id="instagram" href="https://www.instagram.com/dg.photo.graphy_" target="_blank">dg.photo.graphy_</a>
+
+<!-- Esercizi -->
+<section id="exercises">
+  <a class="exercise-item" href="#">Esercizio 1</a>
+  <a class="exercise-item" href="#">Esercizio 2</a>
+  <a class="exercise-item" href="#">Esercizio 3</a>
+  <a class="exercise-item" href="#">Esercizio 4</a>
+</section>
+
+<script>
+const bgLogo = document.getElementById("bgLogo");
+const bgOverlay = document.getElementById("bgOverlay");
+const nameEl = document.getElementById("name");
+const portfolioEl = document.getElementById("portfolio");
+const instagramLink = document.getElementById("instagram");
+const exercisesSection = document.getElementById("exercises");
+
+// luce morbida sul logo e overlay
+function illuminateLogo() {
+  let lightPos = 0;
+  const duration = 5000;
+  const interval = 16;
+
+  setInterval(() => {
+    lightPos += interval / duration;
+    if (lightPos > 1) lightPos = 0;
+
+    const lightX = lightPos * window.innerWidth * 2 - window.innerWidth;
+    const logoCenter = bgLogo.getBoundingClientRect().left + bgLogo.offsetWidth / 2;
+    const diff = Math.abs(lightX - logoCenter);
+
+    if (diff < 300) {
+      let intensity = (300 - diff) / 300;
+      bgLogo.style.textShadow = `0 0 ${50*intensity}px rgba(255,255,255,${0.3*intensity})`;
+      bgLogo.style.opacity = 0.05 + 0.1 * intensity;
+      bgOverlay.style.background = `rgba(255,255,255,${0.08 * intensity})`;
+      nameEl.style.textShadow = `0 0 ${20*intensity}px rgba(255,255,255,${0.3*intensity})`;
+    } else {
+      bgLogo.style.textShadow = `0 0 0px rgba(255,255,255,0)`;
+      bgLogo.style.opacity = 0.05;
+      bgOverlay.style.background = `rgba(255,255,255,0)`;
+      nameEl.style.textShadow = `0 0 0px rgba(255,255,255,0)`;
+    }
+  }, interval);
+}
+illuminateLogo();
+
+// sfondo alternato morbido e lento
+let isBlack = true;
+setInterval(() => {
+  document.body.style.background = isBlack ? "black" : "white";
+  const color = isBlack ? "white" : "black";
+  nameEl.style.color = color;
+  portfolioEl.style.color = color;
+  instagramLink.style.color = color;
+  bgLogo.style.color = color;
+  isBlack = !isBlack;
+}, 7000);
+
+// effetto luce al click
+document.addEventListener('click', () => {
+  bgLogo.style.textShadow = "0 0 50px rgba(255,255,255,0.5)";
+  nameEl.style.textShadow = "0 0 30px rgba(255,255,255,0.5)";
+  bgOverlay.style.background = "rgba(255,255,255,0.08)";
+  setTimeout(() => {
+    bgLogo.style.textShadow = "";
+    nameEl.style.textShadow = "";
+    bgOverlay.style.background = "";
+  }, 300);
+});
+
+// scroll alla sezione esercizi cliccando Portfolio
+portfolioEl.addEventListener('click', () => {
+  exercisesSection.scrollIntoView({ behavior: "smooth" });
+});
+</script>
+
+</body>
+</html>
