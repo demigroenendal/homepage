@@ -6,70 +6,66 @@
 <title>Demi Groenendal | Portfolio</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
-    @keyframes colorLoop {
-        0%, 100% { background-color: #000; color: #fff; }
-        50% { background-color: #fff; color: #000; }
-    }
-
-    html, body {
-        margin: 0; width: 100%; height: 100%;
-        font-family: 'Montserrat', sans-serif;
-        animation: colorLoop 10s infinite ease-in-out;
-        scroll-behavior: smooth;
-        overflow-x: hidden;
-    }
-
-    #bgLogo {
-        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        font-size: clamp(150px, 40vw, 600px); opacity: 0.05; z-index: 0; 
-        pointer-events: none; font-weight: 700; color: inherit;font-family: Georgia, 'Times New Roman', Times, serif;
-    }
-
-    #particleCanvas {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        z-index: 100; display: none; background: #000 !important; cursor: move;
-    }
-    #particleCanvas.active { display: block; }
-
-    #closeBtn {
-        position: fixed; top: 30px; right: 30px; width: 50px; height: 50px;
-        background: rgba(255,255,255,0.1); border: 1px solid #fff; color: #fff;
-        border-radius: 50%; display: none; justify-content: center; align-items: center;
-        cursor: pointer; z-index: 110; backdrop-filter: blur(5px);
-    }
-
-    section { 
-        min-height: 100vh; display: flex; flex-direction: column; 
-        justify-content: center; align-items: center; position: relative; z-index: 10; 
-    }
-
-    #name { font-size: clamp(30px, 7vw, 60px); letter-spacing: 10px; font-weight: 700; text-transform: uppercase; margin: 0; }
-    #sub { font-size: 14px; opacity: 0.6; letter-spacing: 10px; margin: 20px 0 40px; }
-
-    .btn-main {
-        font-size: 14px; letter-spacing: 4px; padding: 15px 40px;
-        border: 1px solid currentColor; color: inherit; text-decoration: none; transition: 0.3s;
-    }
-    .btn-main:hover { background: #fff; color: #000; }
-
-    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 900px; width: 90%; }
-    .item {
-        height: 120px; border: 1px solid rgba(128,128,128,0.2);
-        display: flex; justify-content: center; align-items: center;
-        cursor: pointer; transition: 0.3s; font-size: 12px; letter-spacing: 3px; color: inherit;
-    }
-    .item:hover { background: currentColor; color: initial; border-color: transparent; }
-
-    #contact { padding: 100px 0; }
-    .contact-links { display: flex; flex-direction: column; gap: 25px; text-align: center; }
-    .big-link { font-size: clamp(18px, 4vw, 32px); color: inherit; text-decoration: none; opacity: 0.5; transition: 0.4s; letter-spacing: 3px; }
-    .big-link:hover { opacity: 1; letter-spacing: 7px; }
-
-    @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+@keyframes colorLoop {
+    0%,100%{background-color:#000;color:#fff;}
+    50%{background-color:#fff;color:#000;}
+}
+html,body{
+    margin:0;width:100%;height:100%;
+    font-family:'Montserrat',sans-serif;
+    animation:colorLoop 10s infinite ease-in-out;
+    scroll-behavior:smooth;overflow-x:hidden;
+}
+#bgLogo{
+    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-size:clamp(150px,40vw,600px);opacity:0.05;z-index:0;
+    pointer-events:none;font-weight:700;color:inherit;
+    font-family:Georgia,'Times New Roman',Times,serif;
+}
+#particleCanvas{
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    z-index:100;display:none;background:#000 !important;cursor:move;
+}
+#particleCanvas.active{display:block;}
+#closeBtn{
+    position:fixed;top:30px;right:30px;width:50px;height:50px;
+    background:rgba(255,255,255,0.1);border:1px solid #fff;color:#fff;
+    border-radius:50%;display:none;justify-content:center;align-items:center;
+    cursor:pointer;z-index:110;backdrop-filter:blur(5px);
+}
+section{
+    min-height:100vh;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;position:relative;z-index:10;
+}
+#name{
+    font-size:clamp(30px,7vw,60px);
+    letter-spacing:10px;font-weight:700;text-transform:uppercase;
+    margin:0;text-align:center;
+}
+#sub{font-size:14px;opacity:0.6;letter-spacing:10px;margin:20px 0 40px;}
+.btn-main{
+    font-size:14px;letter-spacing:4px;padding:15px 40px;
+    border:1px solid currentColor;color:inherit;text-decoration:none;transition:0.3s;
+}
+.btn-main:hover{background:#fff;color:#000;}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:900px;width:90%;}
+.item{
+    height:120px;border:1px solid rgba(128,128,128,0.2);
+    display:flex;justify-content:center;align-items:center;
+    cursor:pointer;transition:0.3s;font-size:12px;letter-spacing:3px;color:inherit;
+}
+.item:hover{background:currentColor;color:initial;border-color:transparent;}
+#contact{padding:100px 0;}
+.contact-links{display:flex;flex-direction:column;gap:25px;text-align:center;}
+.big-link{
+    font-size:clamp(18px,4vw,32px);color:inherit;text-decoration:none;opacity:0.5;
+    transition:0.4s;letter-spacing:3px;
+}
+.big-link:hover{opacity:1;letter-spacing:7px;}
+@media(max-width:600px){.grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
-
 <div id="bgLogo">DG</div>
 <div id="closeBtn">✕</div>
 <canvas id="particleCanvas"></canvas>
@@ -90,7 +86,7 @@
 </section>
 
 <section id="contact">
-    <div id="sub" style="margin-bottom: 20px;">CONTACT</div>
+    <div id="sub" style="margin-bottom:20px;">CONTACT</div>
     <div class="contact-links">
         <a href="mailto:demigroenendal@gmail.com" class="big-link">demigroenendal@gmail.com</a>
         <a href="https://www.instagram.com/dg.photo.graphy_" target="_blank" class="big-link">@DG.PHOTO.GRAPHY_</a>
@@ -98,130 +94,149 @@
 </section>
 
 <script>
-    const canvas = document.getElementById('particleCanvas');
-    const ctx = canvas.getContext('2d');
-    const closeBtn = document.getElementById('closeBtn');
-    const btnEx2 = document.getElementById('btnEx2');
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+const closeBtn = document.getElementById('closeBtn');
+const btnEx2 = document.getElementById('btnEx2');
 
-    let particles = [];
-    let rotation = { x: 0, y: 0 };
-    let targetRotation = { x: 0, y: 0 };
-    let zoom = 1100;
-    let isDragging = false;
-    let lastPos = { x: 0, y: 0 };
-    let isExploded = false;
+let particles=[];
+let rotation={x:0,y:0};
+let targetRotation={x:0,y:0};
+let zoom=1100;
+let isDragging=false;
+let lastPos={x:0,y:0};
+let isExploded=false;
 
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resize);
-    resize();
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+window.addEventListener('resize',resize);
+resize();
 
-    class Line3D {
-        constructor(x, y, z, bright) {
-            this.destX = x; this.destY = y; this.destZ = z;
-            // Posizione iniziale random nello spazio
-            this.x = (Math.random() - 0.5) * canvas.width * 2;
-            this.y = (Math.random() - 0.5) * canvas.height * 2;
-            this.z = (Math.random() - 0.5) * 2000;
-            this.vx = 0; this.vy = 0; this.vz = 0;
-            this.bright = bright;
+class Line3D{
+    constructor(x,y,z,bright){
+        this.destX=x; this.destY=y; this.destZ=z;
+        this.x=(Math.random()-0.5)*canvas.width*2;
+        this.y=(Math.random()-0.5)*canvas.height*2;
+        this.z=(Math.random()-0.5)*2000;
+        this.vx=0; this.vy=0; this.vz=0;
+        this.bright=bright;
+    }
+    update(){
+        // ritorno verso posizione originale
+        this.vx+=(this.destX-this.x)*0.05;
+        this.vy+=(this.destY-this.y)*0.05;
+        this.vz+=(this.destZ-this.z)*0.05;
+
+        // Oscillazione lenta Z per effetto 3D dinamico
+        this.z+=Math.sin(Date.now()*0.002 + this.x + this.y)*0.5;
+
+        // Damping
+        this.vx*=0.85; this.vy*=0.85; this.vz*=0.85;
+        this.x+=this.vx; this.y+=this.vy; this.z+=this.vz;
+    }
+    explode(){
+        const force=80;
+        this.vx=(Math.random()-0.5)*force;
+        this.vy=(Math.random()-0.5)*force;
+        this.vz=(Math.random()-0.5)*force;
+    }
+    draw(){
+        let y1=this.y*Math.cos(rotation.x)-this.z*Math.sin(rotation.x);
+        let z1=this.y*Math.sin(rotation.x)+this.z*Math.cos(rotation.x);
+        let xFinal=this.x*Math.cos(rotation.y)+z1*Math.sin(rotation.y);
+        let zFinal=-this.x*Math.sin(rotation.y)+z1*Math.cos(rotation.y);
+
+        let sc=1000/(zFinal+zoom);
+        if(sc>0){
+            const glow=Math.min(1,(this.bright/255)*0.9+0.25);
+            ctx.strokeStyle=`rgba(255,255,255,${glow})`;
+            ctx.lineWidth=2.2*sc;
+            ctx.beginPath();
+            ctx.moveTo(xFinal*sc+canvas.width/2,y1*sc+canvas.height/2);
+            ctx.lineTo(
+                (xFinal+this.vx)*sc+canvas.width/2,
+                (y1+this.vy)*sc+canvas.height/2
+            );
+            ctx.stroke();
+
+            // Scia leggera
+            ctx.beginPath();
+            ctx.moveTo(xFinal*sc+canvas.width/2,y1*sc+canvas.height/2);
+            ctx.lineTo(
+                (xFinal-this.vx*0.5)*sc+canvas.width/2,
+                (y1-this.vy*0.5)*sc+canvas.height/2
+            );
+            ctx.strokeStyle=`rgba(255,255,255,${glow*0.1})`;
+            ctx.stroke();
         }
+    }
+}
 
-        update() {
-            if (!isExploded) {
-                // Ritorno fluido alla posizione della faccia
-                this.vx += (this.destX - this.x) * 0.04;
-                this.vy += (this.destY - this.y) * 0.04;
-                this.vz += (this.destZ - this.z) * 0.04;
-                this.vx *= 0.85; this.vy *= 0.85; this.vz *= 0.85;
-            } else {
-                // Durante l'esplosione, i punti mantengono la velocità impressa
-                this.vx *= 0.99; this.vy *= 0.99; this.vz *= 0.99;
-            }
-            this.x += this.vx; this.y += this.vy; this.z += this.vz;
-        }
+const img=new Image();
+img.src='ritratto.png';
+img.crossOrigin="Anonymous";
+img.onload=()=>{
+    const tCanvas=document.createElement('canvas');
+    const tCtx=tCanvas.getContext('2d');
+    const resSize=400;
+    tCanvas.width=resSize; tCanvas.height=resSize;
+    tCtx.drawImage(img,0,0,resSize,resSize);
+    const data=tCtx.getImageData(0,0,resSize,resSize).data;
 
-        explode() {
-            // Esplosione massiccia e multidirezionale
-            const force = 80; 
-            this.vx = (Math.random() - 0.5) * force;
-            this.vy = (Math.random() - 0.5) * force;
-            this.vz = (Math.random() - 0.5) * force;
-        }
-
-        draw() {
-            let y1 = this.y * Math.cos(rotation.x) - this.z * Math.sin(rotation.x);
-            let z1 = this.y * Math.sin(rotation.x) + this.z * Math.cos(rotation.x);
-            let xFinal = this.x * Math.cos(rotation.y) + z1 * Math.sin(rotation.y);
-            let zFinal = -this.x * Math.sin(rotation.y) + z1 * Math.cos(rotation.y);
-
-            let sc = 1000 / (zFinal + zoom);
-            if (sc > 0) {
-                ctx.strokeStyle = `rgba(255,255,255,${(this.bright/255) * sc * 0.8})`;
-                ctx.lineWidth = 1.5 * sc;
-                ctx.beginPath();
-                ctx.moveTo(xFinal * sc + canvas.width/2, y1 * sc + canvas.height/2);
-                // La linea segue la direzione del movimento
-                ctx.lineTo((xFinal + this.vx) * sc + canvas.width/2, (y1 + this.vy) * sc + canvas.height/2);
-                ctx.stroke();
+    particles=[];
+    for(let y=0;y<resSize;y+=2.5){
+        for(let x=0;x<resSize;x+=2.5){
+            const i=(Math.floor(y)*resSize+Math.floor(x))*4;
+            if(data[i+3]>128){
+                let zPos=(data[i]-128)*1.2;
+                particles.push(new Line3D((x-resSize/2)*3,(y-resSize/2)*3,zPos,data[i]));
             }
         }
     }
+};
 
-    const img = new Image();
-    img.src = 'ritratto.png';
-    img.crossOrigin = "Anonymous";
-    img.onload = () => {
-        const tCanvas = document.createElement('canvas');
-        const tCtx = tCanvas.getContext('2d');
-        const resSize = 400;
-        tCanvas.width = resSize; tCanvas.height = resSize;
-        tCtx.drawImage(img, 0, 0, resSize, resSize);
-        const data = tCtx.getImageData(0, 0, resSize, resSize).data;
-        
-        // Pulizia particelle precedenti per evitare doppioni
-        particles = [];
-        for (let y = 0; y < resSize; y += 2.5) {
-            for (let x = 0; x < resSize; x += 2.5) {
-                const i = (Math.floor(y) * resSize + Math.floor(x)) * 4;
-                if (data[i+3] > 128) {
-                    let zPos = (data[i] - 128) * 1.2; 
-                    particles.push(new Line3D((x - resSize/2) * 3, (y - resSize/2) * 3, zPos, data[i]));
-                }
-            }
-        }
-    };
+function animate(){
+    if(!canvas.classList.contains('active')) return;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    rotation.x+=(targetRotation.x-rotation.x)*0.1;
+    rotation.y+=(targetRotation.y-rotation.y)*0.1;
+    particles.forEach(p=>{p.update();p.draw();});
+    requestAnimationFrame(animate);
+}
 
-    function animate() {
-        if (!canvas.classList.contains('active')) return;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        rotation.x += (targetRotation.x - rotation.x) * 0.1;
-        rotation.y += (targetRotation.y - rotation.y) * 0.1;
-        particles.forEach(p => { p.update(); p.draw(); });
-        requestAnimationFrame(animate);
+canvas.onmousedown=(e)=>{isDragging=true;lastPos={x:e.clientX,y:e.clientY};};
+window.onmousemove=(e)=>{
+    if(isDragging){
+        targetRotation.y+=(e.clientX-lastPos.x)*0.01;
+        targetRotation.x+=(e.clientY-lastPos.y)*0.01;
+        lastPos={x:e.clientX,y:e.clientY};
     }
+};
+window.onmouseup=()=>isDragging=false;
 
-    canvas.onmousedown = (e) => { isDragging = true; lastPos = { x: e.clientX, y: e.clientY }; };
-    window.onmousemove = (e) => {
-        if (isDragging) {
-            targetRotation.y += (e.clientX - lastPos.x) * 0.01;
-            targetRotation.x += (e.clientY - lastPos.y) * 0.01;
-            lastPos = { x: e.clientX, y: e.clientY };
-        }
-    };
-    window.onmouseup = () => isDragging = false;
-    
-    // Al click esplode o ricompone
-    canvas.onclick = (e) => {
-        if (Math.abs(e.clientX - lastPos.x) < 5) {
-            isExploded = !isExploded;
-            if (isExploded) particles.forEach(p => p.explode());
-        }
-    };
-    
-    window.onwheel = (e) => { if(canvas.classList.contains('active')) zoom += e.deltaY; };
+canvas.onclick=(e)=>{
+    if(Math.abs(e.clientX-lastPos.x)<5){
+        isExploded=!isExploded;
+        if(isExploded) particles.forEach(p=>p.explode());
+    }
+};
 
-    btnEx2.onclick = () => { canvas.classList.add('active'); closeBtn.style.display = 'flex'; animate(); };
-    closeBtn.onclick = () => { canvas.classList.remove('active'); closeBtn.style.display = 'none'; isExploded = false; };
+window.onwheel=(e)=>{
+    if(canvas.classList.contains('active')) zoom+=e.deltaY;
+};
+
+btnEx2.onclick=()=>{
+    canvas.classList.add('active');
+    closeBtn.style.display='flex';
+    animate();
+};
+closeBtn.onclick=()=>{
+    canvas.classList.remove('active');
+    closeBtn.style.display='none';
+    isExploded=false;
+};
 </script>
 </body>
 </html>
+
+
+
