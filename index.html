@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Demi Groenendal | Portfolio</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -19,12 +19,14 @@ html,body{
 #bgLogo{
     position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
     font-size:clamp(150px,40vw,600px);opacity:0.05;z-index:0;
-    pointer-events:none;font-weight:700;color:inherit;
+    pointer-events:none; /* Fondamentale: permette di cliccare i tasti sotto */
+    font-weight:700;color:inherit;
     font-family:Georgia,'Times New Roman',Times,serif;
 }
 #particleCanvas{
     position:fixed;top:0;left:0;width:100%;height:100%;
-    z-index:100;display:none;background:#000 !important;cursor:move;
+    z-index:100;display:none;background:#000 !important;
+    touch-action:none; /* Impedisce lo scroll del telefono durante il drag */
 }
 #particleCanvas.active{display:block;}
 #closeBtn{
@@ -46,6 +48,7 @@ section{
 .btn-main{
     font-size:14px;letter-spacing:4px;padding:15px 40px;
     border:1px solid currentColor;color:inherit;text-decoration:none;transition:0.3s;
+    position: relative; z-index: 20;
 }
 .btn-main:hover{background:#fff;color:#000;}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:900px;width:90%;}
@@ -53,6 +56,7 @@ section{
     height:120px;border:1px solid rgba(128,128,128,0.2);
     display:flex;justify-content:center;align-items:center;
     cursor:pointer;transition:0.3s;font-size:12px;letter-spacing:3px;color:inherit;
+    position: relative; z-index: 20;
 }
 .item:hover{background:currentColor;color:initial;border-color:transparent;}
 #contact{padding:100px 0;}
@@ -130,7 +134,7 @@ class VectorLine3D {
         this.x+=this.vx; this.y+=this.vy; this.z+=this.vz;
     }
     explode(){
-        const force=400; // Dispersione ancora più ampia
+        const force=400;
         this.vx=(Math.random()-0.5)*force;
         this.vy=(Math.random()-0.5)*force;
         this.vz=(Math.random()-0.5)*force;
@@ -147,26 +151,20 @@ class VectorLine3D {
             const opacity=Math.min(1,(this.bright/255)+0.5);
             ctx.strokeStyle=`rgba(255,255,255,${opacity})`;
             ctx.lineWidth=0.7 * sc;
-            
             ctx.beginPath();
             ctx.moveTo(xFinal*sc+canvas.width/2, y1*sc+canvas.height/2);
-            
-            // Lunghezza dinamica: corta a riposo (nitidezza), lunga in volo (effetto vettore)
             let trailX = isExploded ? this.vx * 3 : 1;
             let trailY = isExploded ? this.vy * 3 : 1;
-            
-            ctx.lineTo(
-                (xFinal + trailX)*sc+canvas.width/2, 
-                (y1 + trailY)*sc+canvas.height/2
-            );
+            ctx.lineTo((xFinal + trailX)*sc+canvas.width/2, (y1 + trailY)*sc+canvas.height/2);
             ctx.stroke();
         }
     }
 }
 
 const img=new Image();
-img.src='ritratto.png';
 img.crossOrigin="Anonymous";
+img.src='ritratto.png'; 
+
 img.onload=()=>{
     const tCanvas=document.createElement('canvas');
     const tCtx=tCanvas.getContext('2d');
@@ -174,12 +172,10 @@ img.onload=()=>{
     tCanvas.width=resSize; tCanvas.height=resSize;
     tCtx.drawImage(img,0,0,resSize,resSize);
     const data=tCtx.getImageData(0,0,resSize,resSize).data;
-
     const molt = window.innerWidth < 600 ? 1.6 : 3.2; 
-
     particles=[];
-    for(let y=0;y<resSize;y+=3.5){ 
-        for(let x=0;x<resSize;x+=3.5){
+    for(let y=0;y<resSize;y+=4){ // Step leggermente più alto per fluidità mobile
+        for(let x=0;x<resSize;x+=4){
             const i=(Math.floor(y)*resSize+Math.floor(x))*4;
             if(data[i+3]>128){
                 let zPos=(data[i]-128)*0.6;
@@ -189,21 +185,17 @@ img.onload=()=>{
     }
 };
 
+img.onerror = () => console.error("Immagine ritratto.png non trovata!");
+
 function animate(){
     if(!canvas.classList.contains('active')) return;
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    
     rotation.x+=(targetRotation.x-rotation.x)*0.1;
     rotation.y+=(targetRotation.y-rotation.y)*0.1;
-    
-    particles.forEach(p=>{
-        p.update();
-        p.draw();
-    });
+    particles.forEach(p=>{ p.update(); p.draw(); });
     requestAnimationFrame(animate);
 }
 
-// Rotazione 360 e Touch support
 const startAction = (x,y) => { isDragging=true; lastPos={x,y}; };
 const moveAction = (x,y) => {
     if(isDragging){
@@ -213,32 +205,34 @@ const moveAction = (x,y) => {
     }
 };
 
+// Eventi Mouse
 canvas.onmousedown=(e)=>startAction(e.clientX, e.clientY);
-canvas.ontouchstart=(e)=>startAction(e.touches[0].clientX, e.touches[0].clientY);
-
 window.onmousemove=(e)=>moveAction(e.clientX, e.clientY);
-window.ontouchmove=(e)=>{
-    moveAction(e.touches[0].clientX, e.touches[0].clientY);
-    if(canvas.classList.contains('active')) e.preventDefault();
-};
+window.onmouseup=()=>isDragging=false;
 
-window.onmouseup=window.ontouchend=()=>isDragging=false;
+// Eventi Touch (Mobile)
+canvas.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    startAction(t.clientX, t.clientY);
+}, {passive: false});
 
-// Esplosione / Ricomposizione
+window.addEventListener('touchmove', (e) => {
+    if(canvas.classList.contains('active')) {
+        e.preventDefault(); // Blocca lo scroll se l'animazione è attiva
+        const t = e.touches[0];
+        moveAction(t.clientX, t.clientY);
+    }
+}, {passive: false});
+
+window.addEventListener('touchend', () => isDragging=false);
+
 canvas.onclick=()=>{
     isExploded=!isExploded;
     if(isExploded) particles.forEach(p=>p.explode());
 };
 
-// Zoom (entrata nell'immagine)
-window.onwheel=(e)=>{
-    if(canvas.classList.contains('active')){
-        zoom += e.deltaY * 0.8;
-        if(zoom < 20) zoom = 20; 
-    }
-};
-
-btnEx2.onclick=()=>{
+btnEx2.onclick=(e)=>{
+    e.preventDefault();
     canvas.classList.add('active');
     closeBtn.style.display='flex';
     isExploded = false;
@@ -252,6 +246,7 @@ closeBtn.onclick=()=>{
 </script>
 </body>
 </html>
+
 
 
 
