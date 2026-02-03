@@ -5,249 +5,249 @@
 <title>Demi Groenendal Portfolio</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto+Slab:wght@400&display=swap" rel="stylesheet">
 <style>
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  font-family: Arial, Helvetica, sans-serif;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  background: black;
-  transition: background 2s ease;
-}
+    html, body {
+        margin: 0; width: 100%; height: 100%;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow-x: hidden; scroll-behavior: smooth;
+        background: black; transition: background 2s ease;
+    }
 
-/* luce morbida animata */
-#light {
-  position: fixed;
-  top: 0;
-  left: -50%;
-  width: 200%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
-  animation: lightMove 5s infinite linear;
-  z-index: 1;
-}
+    #particleCanvas {
+        position: fixed; top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: 50; display: none; 
+        cursor: grab;
+        touch-action: none;
+    }
+    #particleCanvas.active { display: block; }
 
-@keyframes lightMove {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
+    #light {
+        position: fixed; top: 0; left: -50%; width: 200%; height: 100%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+        animation: lightMove 5s infinite linear; z-index: 1; pointer-events: none;
+    }
 
-#bgOverlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  background: rgba(255,255,255,0);
-  transition: background 0.2s ease;
-  z-index: 0;
-}
+    @keyframes lightMove { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 
-#bgLogo {
-  position: fixed;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 700px;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  color: white;
-  opacity: 0.05;
-  z-index: 0;
-  pointer-events: none;
-  transition: text-shadow 0.2s ease, opacity 0.2s ease;
-}
+    #bgLogo {
+        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        font-size: 700px; color: white; opacity: 0.05; z-index: 0; pointer-events: none;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
 
-/* Home Section */
-#home {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-  color: white;
-}
+    #home, #exercises {
+        height: 100vh; display: flex; flex-direction: column;
+        justify-content: center; align-items: center; position: relative; z-index: 10; color: white;
+    }
 
-#name {
-  font-size: 48px;
-  margin: 0 0 20px 0;
-  opacity: 1;
-  animation: fadeName 3s infinite alternate;
-}
+    #name { font-size: 48px; margin-bottom: 20px; animation: fadeName 3s infinite alternate; }
+    @keyframes fadeName { 0% { opacity: 0.4; } 100% { opacity: 1; } }
 
-@keyframes fadeName {
-  0% { opacity: 0.4; }
-  50% { opacity: 1; }
-  100% { opacity: 0.4; }
-}
+    #portfolio { font-size: 28px; letter-spacing: 4px; cursor: pointer; text-decoration: none; color: inherit; z-index: 20; }
 
-#portfolio {
-  font-size: 28px;
-  letter-spacing: 4px;
-  cursor: pointer;
-  display: inline-block;
-  text-decoration: none;
-  color: inherit;
-  transition: transform 0.3s ease;
-}
+    .exercise-item {
+        width: 300px; height: 60px; background: rgba(255,255,255,0.1);
+        display: flex; justify-content: center; align-items: center;
+        border-radius: 12px; cursor: pointer; font-size: 20px; color: white;
+        text-decoration: none; margin-bottom: 20px; transition: 0.3s;
+    }
+    .exercise-item:hover { background: #555; transform: scale(1.1); }
 
-#portfolio:hover { transform: scale(1.05); }
-
-#instagram {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 20px;
-  text-decoration: none;
-  color: white;
-  z-index: 999;
-  transition: color 1s ease, transform 0.3s ease;
-}
-
-#instagram:hover { transform: translateX(-50%) scale(1.1); }
-
-/* Esercizi Section */
-#exercises {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
-  z-index: 2;
-  position: relative;
-}
-
-.exercise-item {
-  width: 200px;
-  height: 60px;
-  background: #222;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 20px;
-  color: white;
-  text-decoration: none;
-  transition: transform 0.3s ease, background 0.3s ease;
-}
-
-.exercise-item:hover {
-  transform: scale(1.1);
-  background: #555;
-}
+    #instagram { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: white; z-index: 999; text-decoration: none; }
+    
+    #exitHint {
+        position: fixed; top: 20px; right: 20px; color: white; opacity: 0.5;
+        z-index: 60; display: none; font-size: 12px;
+    }
 </style>
 </head>
 <body>
 
 <div id="light"></div>
-<div id="bgOverlay"></div>
 <div id="bgLogo">DG</div>
+<div id="exitHint">ESC PER TORNARE • CLICK PER GENERARE TRATTI</div>
+<canvas id="particleCanvas"></canvas>
 
-<!-- Home -->
 <section id="home">
-  <div id="name">Demi Groenendal</div>
-  <a id="portfolio">Portfolio</a>
+    <div id="name">Demi Groenendal</div>
+    <a id="portfolio">Portfolio</a>
+</section>
+
+<section id="exercises">
+    <a class="exercise-item">Esercizio 1</a>
+    <a class="exercise-item" id="btnEsercizio2">Esercizio 2</a>
+    <a class="exercise-item">Esercizio 3</a>
+    <a class="exercise-item">Esercizio 4</a>
 </section>
 
 <a id="instagram" href="https://www.instagram.com/dg.photo.graphy_" target="_blank">dg.photo.graphy_</a>
 
-<!-- Esercizi -->
-<section id="exercises">
-  <a class="exercise-item" href="#">Esercizio 1</a>
-  <a class="exercise-item" href="#">Esercizio 2</a>
-  <a class="exercise-item" href="#">Esercizio 3</a>
-  <a class="exercise-item" href="#">Esercizio 4</a>
-</section>
-
 <script>
-const bgLogo = document.getElementById("bgLogo");
-const bgOverlay = document.getElementById("bgOverlay");
-const nameEl = document.getElementById("name");
-const portfolioEl = document.getElementById("portfolio");
-const instagramLink = document.getElementById("instagram");
-const exercisesSection = document.getElementById("exercises");
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    const btnEx2 = document.getElementById('btnEsercizio2');
+    const portfolioBtn = document.getElementById('portfolio');
+    const exSection = document.getElementById('exercises');
+    const exitHint = document.getElementById('exitHint');
 
-// luce morbida sul logo e overlay
-function illuminateLogo() {
-  let lightPos = 0;
-  const duration = 5000;
-  const interval = 16;
+    let particles = [], imagePoints = [], isComposing = false;
+    let angleX = 0, angleY = 0, targetAngleX = 0, targetAngleY = 0;
+    let zoom = 0, targetZoom = 0, fov = 800;
 
-  setInterval(() => {
-    lightPos += interval / duration;
-    if (lightPos > 1) lightPos = 0;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    const lightX = lightPos * window.innerWidth * 2 - window.innerWidth;
-    const logoCenter = bgLogo.getBoundingClientRect().left + bgLogo.offsetWidth / 2;
-    const diff = Math.abs(lightX - logoCenter);
+    const img = new Image();
+    img.src = 'ritratto.png'; 
+    img.crossOrigin = "Anonymous";
+    img.onload = () => {
+        const tempCanvas = document.createElement('canvas');
+        const tempCtx = tempCanvas.getContext('2d');
+        const scale = Math.min(canvas.width / img.width, canvas.height / img.height) * 0.8;
+        tempCanvas.width = img.width; tempCanvas.height = img.height;
+        tempCtx.drawImage(img, 0, 0);
+        const data = tempCtx.getImageData(0, 0, img.width, img.height).data;
+        
+        // Aumentiamo il passo (step) per un look più grafico e meno "fotografico"
+        for (let y = 0; y < img.height; y += 5) {
+            for (let x = 0; x < img.width; x += 5) {
+                const i = (y * img.width + x) * 4;
+                if (data[i + 3] > 128) {
+                    const avg = (data[i] * 0.299 + data[i+1] * 0.587 + data[i+2] * 0.114);
+                    imagePoints.push({
+                        x: (x - img.width / 2) * scale,
+                        y: (y - img.height / 2) * scale,
+                        z: (Math.random() - 0.5) * 150, // Più profondità per le linee
+                        brightness: avg
+                    });
+                }
+            }
+        }
+        initParticles();
+    };
 
-    if (diff < 300) {
-      let intensity = (300 - diff) / 300;
-      bgLogo.style.textShadow = `0 0 ${50*intensity}px rgba(255,255,255,${0.3*intensity})`;
-      bgLogo.style.opacity = 0.05 + 0.1 * intensity;
-      bgOverlay.style.background = `rgba(255,255,255,${0.08 * intensity})`;
-      nameEl.style.textShadow = `0 0 ${20*intensity}px rgba(255,255,255,${0.3*intensity})`;
-    } else {
-      bgLogo.style.textShadow = `0 0 0px rgba(255,255,255,0)`;
-      bgLogo.style.opacity = 0.05;
-      bgOverlay.style.background = `rgba(255,255,255,0)`;
-      nameEl.style.textShadow = `0 0 0px rgba(255,255,255,0)`;
+    class Particle {
+        constructor(destX, destY, destZ, brightness) {
+            this.destX = destX; this.destY = destY; this.destZ = destZ;
+            this.brightness = brightness;
+            this.color = `rgba(${brightness},${brightness},${brightness},${0.4 + Math.random() * 0.4})`;
+            this.reset();
+        }
+        reset() {
+            this.x3D = (Math.random() - 0.5) * canvas.width * 2.5;
+            this.y3D = (Math.random() - 0.5) * canvas.height * 2.5;
+            this.z3D = (Math.random() - 0.5) * 3000;
+            this.vx = (Math.random() - 0.5) * 4;
+            this.vy = (Math.random() - 0.5) * 4;
+            this.vz = (Math.random() - 0.5) * 4;
+            this.ease = 0.04 + Math.random() * 0.04;
+        }
+        update() {
+            if (isComposing) {
+                let cosY = Math.cos(angleY), sinY = Math.sin(angleY);
+                let x1 = this.destX * cosY - this.destZ * sinY;
+                let z1 = this.destX * sinY + this.destZ * cosY;
+                let cosX = Math.cos(angleX), sinX = Math.sin(angleX);
+                let y2 = this.destY * cosX - z1 * sinX;
+                let z2 = this.destY * sinX + z1 * cosX - zoom;
+                this.x3D += (x1 - this.x3D) * this.ease;
+                this.y3D += (y2 - this.y3D) * this.ease;
+                this.z3D += (z2 - this.z3D) * this.ease;
+            } else {
+                this.x3D += this.vx; this.y3D += this.vy; this.z3D += this.vz;
+                if (Math.abs(this.x3D) > canvas.width * 1.5) this.vx *= -1;
+                if (Math.abs(this.y3D) > canvas.height * 1.5) this.vy *= -1;
+                if (this.z3D < -1000 || this.z3D > 3000) this.vz *= -1;
+            }
+        }
     }
-  }, interval);
-}
-illuminateLogo();
 
-// sfondo alternato morbido e lento
-let isBlack = true;
-setInterval(() => {
-  document.body.style.background = isBlack ? "black" : "white";
-  const color = isBlack ? "white" : "black";
-  nameEl.style.color = color;
-  portfolioEl.style.color = color;
-  instagramLink.style.color = color;
-  bgLogo.style.color = color;
-  isBlack = !isBlack;
-}, 7000);
+    function initParticles() { 
+        particles = imagePoints.map(p => new Particle(p.x, p.y, p.z, p.brightness)); 
+    }
 
-// effetto luce al click
-document.addEventListener('click', () => {
-  bgLogo.style.textShadow = "0 0 50px rgba(255,255,255,0.5)";
-  nameEl.style.textShadow = "0 0 30px rgba(255,255,255,0.5)";
-  bgOverlay.style.background = "rgba(255,255,255,0.08)";
-  setTimeout(() => {
-    bgLogo.style.textShadow = "";
-    nameEl.style.textShadow = "";
-    bgOverlay.style.background = "";
-  }, 300);
-});
+    function animate() {
+        ctx.fillStyle = 'black'; 
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        angleX += (targetAngleX - angleX) * 0.1; 
+        angleY += (targetAngleY - angleY) * 0.1;
+        zoom += (targetZoom - zoom) * 0.1;
 
-// scroll alla sezione esercizi cliccando Portfolio
-portfolioEl.addEventListener('click', () => {
-  exercisesSection.scrollIntoView({ behavior: "smooth" });
-});
+        // Disegno a tratti (Hatching effect)
+        ctx.lineWidth = 1.2;
+        for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            p.update();
+            
+            const s = fov / (fov + p.z3D);
+            if (s > 0.1) {
+                const x = p.x3D * s + canvas.width / 2;
+                const y = p.y3D * s + canvas.height / 2;
+
+                // Colleghiamo i punti vicini con linee "a caso" ma strutturate
+                // Solo se siamo in modalità composizione o se i punti sono vicini
+                if (i % 2 === 0 && i + 1 < particles.length) {
+                    const p2 = particles[i+1];
+                    const s2 = fov / (fov + p2.z3D);
+                    const x2 = p2.x3D * s2 + canvas.width / 2;
+                    const y2 = p2.y3D * s2 + canvas.height / 2;
+
+                    // Calcolo distanza per evitare linee troppo lunghe durante la dispersione
+                    const dist = Math.hypot(x - x2, y - y2);
+                    if (dist < (isComposing ? 40 : 100)) {
+                        ctx.strokeStyle = p.color;
+                        ctx.beginPath();
+                        ctx.moveTo(x, y);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    // --- LOGICA INTERAZIONE ---
+    btnEx2.onclick = (e) => { 
+        e.stopPropagation();
+        canvas.classList.add('active'); 
+        exitHint.style.display = 'block';
+        isComposing = false;
+        window.scrollTo(0,0); 
+    };
+
+    portfolioBtn.onclick = () => exSection.scrollIntoView({ behavior: "smooth" });
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") {
+            canvas.classList.remove('active');
+            exitHint.style.display = 'none';
+        }
+    });
+
+    let isDragging = false, lastX, lastY, moveCount = 0;
+    const startAction = (x, y) => { isDragging = true; lastX = x; lastY = y; moveCount = 0; };
+    const moveAction = (x, y) => {
+        if (isDragging) {
+            moveCount++;
+            targetAngleY += (x - lastX) * 0.01;
+            targetAngleX -= (y - lastY) * 0.01;
+            lastX = x; lastY = y;
+        }
+    };
+    const endAction = () => { if (moveCount < 5 && canvas.classList.contains('active')) isComposing = !isComposing; isDragging = false; };
+
+    canvas.onmousedown = (e) => startAction(e.clientX, e.clientY);
+    window.onmousemove = (e) => moveAction(e.clientX, e.clientY);
+    window.onmouseup = endAction;
+    canvas.ontouchstart = (e) => startAction(e.touches[0].clientX, e.touches[0].clientY);
+    window.ontouchmove = (e) => moveAction(e.touches[0].clientX, e.touches[0].clientY);
+    window.ontouchend = endAction;
+
+    window.onwheel = (e) => { if(canvas.classList.contains('active')) targetZoom = Math.max(-1000, Math.min(targetZoom + e.deltaY * 0.8, 2500)); };
+
+    animate();
+    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 </script>
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
