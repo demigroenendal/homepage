@@ -102,7 +102,7 @@ const btnEx2 = document.getElementById('btnEx2');
 let particles=[];
 let rotation={x:0,y:0};
 let targetRotation={x:0,y:0};
-let zoom=1100;
+let zoom=850;
 let isDragging=false;
 let lastPos={x:0,y:0};
 let isExploded=false;
@@ -111,30 +111,26 @@ function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeigh
 window.addEventListener('resize',resize);
 resize();
 
-class Line3D{
+class VectorLine3D {
     constructor(x,y,z,bright){
         this.destX=x; this.destY=y; this.destZ=z;
-        this.x=(Math.random()-0.5)*canvas.width*2;
-        this.y=(Math.random()-0.5)*canvas.height*2;
-        this.z=(Math.random()-0.5)*2000;
+        this.x=(Math.random()-0.5)*canvas.width*5;
+        this.y=(Math.random()-0.5)*canvas.height*5;
+        this.z=(Math.random()-0.5)*6000;
         this.vx=0; this.vy=0; this.vz=0;
         this.bright=bright;
     }
     update(){
-        // ritorno verso posizione originale
-        this.vx+=(this.destX-this.x)*0.05;
-        this.vy+=(this.destY-this.y)*0.05;
-        this.vz+=(this.destZ-this.z)*0.05;
-
-        // Oscillazione lenta Z per effetto 3D dinamico
-        this.z+=Math.sin(Date.now()*0.002 + this.x + this.y)*0.5;
-
-        // Damping
-        this.vx*=0.85; this.vy*=0.85; this.vz*=0.85;
+        if(!isExploded){
+            this.vx+=(this.destX-this.x)*0.08;
+            this.vy+=(this.destY-this.y)*0.08;
+            this.vz+=(this.destZ-this.z)*0.08;
+        }
+        this.vx*=0.86; this.vy*=0.86; this.vz*=0.86;
         this.x+=this.vx; this.y+=this.vy; this.z+=this.vz;
     }
     explode(){
-        const force=80;
+        const force=400; // Dispersione ancora più ampia
         this.vx=(Math.random()-0.5)*force;
         this.vy=(Math.random()-0.5)*force;
         this.vz=(Math.random()-0.5)*force;
@@ -146,26 +142,23 @@ class Line3D{
         let zFinal=-this.x*Math.sin(rotation.y)+z1*Math.cos(rotation.y);
 
         let sc=1000/(zFinal+zoom);
-        if(sc>0){
-            const glow=Math.min(1,(this.bright/255)*0.9+0.25);
-            ctx.strokeStyle=`rgba(255,255,255,${glow})`;
-            ctx.lineWidth=2.2*sc;
+        
+        if(sc > 0){
+            const opacity=Math.min(1,(this.bright/255)+0.5);
+            ctx.strokeStyle=`rgba(255,255,255,${opacity})`;
+            ctx.lineWidth=0.7 * sc;
+            
             ctx.beginPath();
-            ctx.moveTo(xFinal*sc+canvas.width/2,y1*sc+canvas.height/2);
+            ctx.moveTo(xFinal*sc+canvas.width/2, y1*sc+canvas.height/2);
+            
+            // Lunghezza dinamica: corta a riposo (nitidezza), lunga in volo (effetto vettore)
+            let trailX = isExploded ? this.vx * 3 : 1;
+            let trailY = isExploded ? this.vy * 3 : 1;
+            
             ctx.lineTo(
-                (xFinal+this.vx)*sc+canvas.width/2,
-                (y1+this.vy)*sc+canvas.height/2
+                (xFinal + trailX)*sc+canvas.width/2, 
+                (y1 + trailY)*sc+canvas.height/2
             );
-            ctx.stroke();
-
-            // Scia leggera
-            ctx.beginPath();
-            ctx.moveTo(xFinal*sc+canvas.width/2,y1*sc+canvas.height/2);
-            ctx.lineTo(
-                (xFinal-this.vx*0.5)*sc+canvas.width/2,
-                (y1-this.vy*0.5)*sc+canvas.height/2
-            );
-            ctx.strokeStyle=`rgba(255,255,255,${glow*0.1})`;
             ctx.stroke();
         }
     }
@@ -182,13 +175,15 @@ img.onload=()=>{
     tCtx.drawImage(img,0,0,resSize,resSize);
     const data=tCtx.getImageData(0,0,resSize,resSize).data;
 
+    const molt = window.innerWidth < 600 ? 1.6 : 3.2; 
+
     particles=[];
-    for(let y=0;y<resSize;y+=2.5){
-        for(let x=0;x<resSize;x+=2.5){
+    for(let y=0;y<resSize;y+=3.5){ 
+        for(let x=0;x<resSize;x+=3.5){
             const i=(Math.floor(y)*resSize+Math.floor(x))*4;
             if(data[i+3]>128){
-                let zPos=(data[i]-128)*1.2;
-                particles.push(new Line3D((x-resSize/2)*3,(y-resSize/2)*3,zPos,data[i]));
+                let zPos=(data[i]-128)*0.6;
+                particles.push(new VectorLine3D((x-resSize/2)*molt,(y-resSize/2)*molt,zPos,data[i]));
             }
         }
     }
@@ -197,42 +192,62 @@ img.onload=()=>{
 function animate(){
     if(!canvas.classList.contains('active')) return;
     ctx.clearRect(0,0,canvas.width,canvas.height);
+    
     rotation.x+=(targetRotation.x-rotation.x)*0.1;
     rotation.y+=(targetRotation.y-rotation.y)*0.1;
-    particles.forEach(p=>{p.update();p.draw();});
+    
+    particles.forEach(p=>{
+        p.update();
+        p.draw();
+    });
     requestAnimationFrame(animate);
 }
 
-canvas.onmousedown=(e)=>{isDragging=true;lastPos={x:e.clientX,y:e.clientY};};
-window.onmousemove=(e)=>{
+// Rotazione 360 e Touch support
+const startAction = (x,y) => { isDragging=true; lastPos={x,y}; };
+const moveAction = (x,y) => {
     if(isDragging){
-        targetRotation.y+=(e.clientX-lastPos.x)*0.01;
-        targetRotation.x+=(e.clientY-lastPos.y)*0.01;
-        lastPos={x:e.clientX,y:e.clientY};
-    }
-};
-window.onmouseup=()=>isDragging=false;
-
-canvas.onclick=(e)=>{
-    if(Math.abs(e.clientX-lastPos.x)<5){
-        isExploded=!isExploded;
-        if(isExploded) particles.forEach(p=>p.explode());
+        targetRotation.y+=(x-lastPos.x)*0.012;
+        targetRotation.x+=(y-lastPos.y)*0.012;
+        lastPos={x,y};
     }
 };
 
+canvas.onmousedown=(e)=>startAction(e.clientX, e.clientY);
+canvas.ontouchstart=(e)=>startAction(e.touches[0].clientX, e.touches[0].clientY);
+
+window.onmousemove=(e)=>moveAction(e.clientX, e.clientY);
+window.ontouchmove=(e)=>{
+    moveAction(e.touches[0].clientX, e.touches[0].clientY);
+    if(canvas.classList.contains('active')) e.preventDefault();
+};
+
+window.onmouseup=window.ontouchend=()=>isDragging=false;
+
+// Esplosione / Ricomposizione
+canvas.onclick=()=>{
+    isExploded=!isExploded;
+    if(isExploded) particles.forEach(p=>p.explode());
+};
+
+// Zoom (entrata nell'immagine)
 window.onwheel=(e)=>{
-    if(canvas.classList.contains('active')) zoom+=e.deltaY;
+    if(canvas.classList.contains('active')){
+        zoom += e.deltaY * 0.8;
+        if(zoom < 20) zoom = 20; 
+    }
 };
 
 btnEx2.onclick=()=>{
     canvas.classList.add('active');
     closeBtn.style.display='flex';
+    isExploded = false;
     animate();
 };
+
 closeBtn.onclick=()=>{
     canvas.classList.remove('active');
     closeBtn.style.display='none';
-    isExploded=false;
 };
 </script>
 </body>
