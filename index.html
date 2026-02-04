@@ -19,6 +19,8 @@ html, body {
     animation: colorLoop 15s linear infinite;
     scroll-behavior: smooth; overflow-x: hidden;
     transition: background-color 0.8s ease;
+    /* Impedisce il refresh a scorrimento su mobile durante il gioco */
+    overscroll-behavior-y: contain; 
 }
 body.stop-anim { animation-play-state: paused !important; }
 
@@ -40,7 +42,7 @@ body.stop-anim { animation-play-state: paused !important; }
 }
 #closeBtn { border-color: #fff; color: #fff; z-index: 110; }
 
-#particleCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; display: none; background: #000 !important; }
+#particleCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; display: none; background: #000 !important; touch-action: none; }
 #particleCanvas.active { display: block; }
 
 section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; z-index: 10; transition: opacity 0.6s ease; }
@@ -228,7 +230,7 @@ function animateP3() {
 btnEx3.onclick = e => { e.preventDefault(); document.body.classList.add('stop-anim'); p3Canvas.classList.add('active'); p3Close.style.display='flex'; initP3(); animateP3(); };
 p3Close.onclick = () => { document.body.classList.remove('stop-anim'); p3Canvas.classList.remove('active'); p3Close.style.display='none'; };
 
-/* ================= PROJECT 02 (FOTO 3D) ================= */
+/* ================= PROJECT 02 (FOTO 3D + MOBILE READY) ================= */
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 const closeBtn = document.getElementById('closeBtn');
@@ -277,16 +279,28 @@ img.onload = () => {
 
 function animateP2(){ if(!canvas.classList.contains('active')) return; ctx.clearRect(0, 0, canvas.width, canvas.height); rotation.x += (targetRotation.x - rotation.x) * 0.1; rotation.y += (targetRotation.y - rotation.y) * 0.1; particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateP2); }
 
-canvas.onmousedown = e => { isDragging = true; lastPos = { x: e.clientX, y: e.clientY }; dragDist = 0; };
-window.onmousemove = e => { 
+/* --- GESTIONE INPUT (MOUSE + TOUCH) --- */
+function startDrag(px, py) { isDragging = true; lastPos = { x: px, y: py }; dragDist = 0; }
+function moveDrag(px, py) {
     if(isDragging){ 
-        let dx = e.clientX - lastPos.x; let dy = e.clientY - lastPos.y;
+        let dx = px - lastPos.x; let dy = py - lastPos.y;
         targetRotation.y += dx * 0.01; targetRotation.x += dy * 0.01; 
-        lastPos = { x: e.clientX, y: e.clientY }; dragDist += Math.abs(dx) + Math.abs(dy);
+        lastPos = { x: px, y: py }; dragDist += Math.abs(dx) + Math.abs(dy);
     }
-    mouseP3.x = e.clientX; mouseP3.y = e.clientY;
-};
-window.onmouseup = () => { if(isDragging && dragDist < 5){ isExploded = !isExploded; if(isExploded) particles.forEach(p => p.explode()); } isDragging = false; };
+    mouseP3.x = px; mouseP3.y = py;
+}
+function endDrag() { if(isDragging && dragDist < 10){ isExploded = !isExploded; if(isExploded) particles.forEach(p => p.explode()); } isDragging = false; }
+
+// Mouse Events
+canvas.onmousedown = e => startDrag(e.clientX, e.clientY);
+window.onmousemove = e => moveDrag(e.clientX, e.clientY);
+window.onmouseup = () => endDrag();
+
+// Touch Events
+canvas.ontouchstart = e => { if(e.touches.length === 1) startDrag(e.touches[0].clientX, e.touches[0].clientY); };
+canvas.ontouchmove = e => { if(e.touches.length === 1) { e.preventDefault(); moveDrag(e.touches[0].clientX, e.touches[0].clientY); } };
+canvas.ontouchend = () => endDrag();
+
 canvas.addEventListener('wheel', e => { e.preventDefault(); zoom += e.deltaY; });
 
 btnEx2.onclick = e => { e.preventDefault(); document.body.classList.add('stop-anim'); canvas.classList.add('active'); closeBtn.style.display = 'flex'; isExploded = false; animateP2(); };
