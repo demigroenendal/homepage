@@ -39,8 +39,8 @@ body.stop-anim { animation-play-state: paused !important; }
 .navbar.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 .navbar a { text-decoration: none; color: #fff; font-size: 11px; letter-spacing: 3px; font-weight: 700; text-transform: uppercase; }
 
-/* BARRA SFONDO SFOCATO */
-.scroll-overlay {
+/* BARRA SFONDO SFOCATO (PER TUTTE LE SEZIONI) */
+.scroll-overlay, .about-bar-bg {
     position: fixed;
     top: 0; left: 0;
     width: 100%;
@@ -52,6 +52,11 @@ body.stop-anim { animation-play-state: paused !important; }
     z-index: 9998;
     opacity: 1;
     transition: opacity 0.4s ease;
+}
+
+/* Specifica per l'About Me per stare sotto la X ma sopra i contenuti */
+.about-bar-bg {
+    z-index: 10001;
 }
 
 #bgLogo {
@@ -214,6 +219,8 @@ section { min-height: 130vh; display: flex; flex-direction: column; justify-cont
 </div>
 
 <div id="aboutOverlay">
+    <div class="about-bar-bg"></div>
+    
     <div id="aboutClose" style="display: flex;" onclick="closeAll()">✕</div>
     <div class="about-links">
         
@@ -515,6 +522,4 @@ btnEx2.onclick = e => { e.preventDefault(); document.body.classList.add('stop-an
 </script>
 </body>
 </html>
-
-
 
