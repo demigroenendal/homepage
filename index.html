@@ -39,7 +39,7 @@ body.stop-anim { animation-play-state: paused !important; }
 .navbar.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 .navbar a { text-decoration: none; color: #fff; font-size: 11px; letter-spacing: 3px; font-weight: 700; text-transform: uppercase; }
 
-/* BARRA SFONDO SFOCATO (PER TUTTE LE SEZIONI) */
+/* BARRA SFONDO SFOCATO */
 .scroll-overlay, .about-bar-bg {
     position: fixed;
     top: 0; left: 0;
@@ -54,17 +54,21 @@ body.stop-anim { animation-play-state: paused !important; }
     transition: opacity 0.4s ease;
 }
 
-/* Specifica per l'About Me per stare sotto la X ma sopra i contenuti */
 .about-bar-bg {
     z-index: 10001;
 }
 
+/* LOGO SFONDO */
 #bgLogo {
     position: fixed; top: 50%; left: 50%;
-    transform: translate(-50%, -50%) perspective(1000px);
-    font-size: clamp(150px, 40vw, 600px); opacity: 0.15;
-    z-index: 0; pointer-events: none; font-weight: 700;
-    color: #fff; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; display: flex;
+    transform: translate(-50%, -50%);
+    width: clamp(150px, 35vw, 500px); 
+    opacity: 0.15;
+    z-index: 0; pointer-events: none;
+    display: flex; justify-content: center; align-items: center;
+}
+#bgLogo img {
+    width: 100%; height: auto; filter: brightness(0) invert(1);
 }
 
 #p3Canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5000; display: none; }
@@ -110,6 +114,7 @@ body.stop-anim { animation-play-state: paused !important; }
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    max-width: 250px;
 }
 
 .photo-rect img, .video-rect video, .graphic-rect img {
@@ -124,7 +129,16 @@ body.stop-anim { animation-play-state: paused !important; }
     letter-spacing: 2px;
     text-transform: uppercase;
     font-weight: 700;
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,1);
+}
+
+.media-description {
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    margin: 0;
+    padding: 0 10px;
 }
 
 /* LIGHTBOX */
@@ -159,7 +173,6 @@ body.stop-anim { animation-play-state: paused !important; }
     z-index: 10002 !important; 
 }
 
-/* SPOSTATO Z-INDEX LIGHTBOX ANCORA PIU SU PER COPRIRE TUTTO */
 #lightboxClose { z-index: 30000 !important; }
 
 #particleCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 6000; display: none; background: #000 !important; touch-action: none; }
@@ -174,13 +187,29 @@ section { min-height: 130vh; display: flex; flex-direction: column; justify-cont
 .about-box { text-align: center; }
 .about-box p { font-weight: 700; font-size: 12px; letter-spacing: 5px; text-transform: uppercase; color: #ffffff; margin: 8px 0; line-height: 1.5; }
 
-.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; max-width: 1000px; width: 90%; perspective: 1000px; }
+/* GRIGLIA MODIFICATA PER ALLINEAMENTO */
+.grid { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); /* Due colonne uguali */
+    gap: 30px; 
+    max-width: 1000px; 
+    width: 90%; 
+    perspective: 1000px; 
+}
 .item {
     height: 220px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(8px); display: flex; flex-direction: column; justify-content: center; align-items: center; 
     cursor: pointer; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     position: relative; z-index: 20; text-decoration: none; overflow: hidden; color: #fff;
 }
+
+/* Stile specifico per Project 3 per centrarlo sotto */
+#btnEx3 {
+    grid-column: 1 / span 2; /* Occupa lo spazio di entrambe le colonne */
+    justify-self: center;    /* Si centra orizzontalmente */
+    width: calc(50% - 15px); /* Mantiene la stessa larghezza degli altri (metà meno il gap) */
+}
+
 .item::before {
     content: attr(data-num); position: absolute; font-size: 140px; font-weight: 700; color: #fff;
     opacity: 0.08; bottom: -30px; right: -10px; transition: 0.6s; pointer-events: none;
@@ -195,6 +224,7 @@ section { min-height: 130vh; display: flex; flex-direction: column; justify-cont
 @media(max-width: 600px) { 
     .grid { grid-template-columns: 1fr; gap: 20px; } 
     .item { height: 180px; } 
+    #btnEx3 { width: 100%; grid-column: auto; } /* Torna normale su mobile */
     .video-rect video, .graphic-rect img, .photo-rect img { width: 180px; height: 220px; } 
 }
 </style>
@@ -210,7 +240,7 @@ section { min-height: 130vh; display: flex; flex-direction: column; justify-cont
     <a href="#contact" onclick="closeAll()">Contact</a>
 </nav>
 
-<div id="bgLogo"><span>D</span><span>G</span></div>
+<div id="bgLogo"><img src="logo.png" alt="Logo Sfondo"></div>
 
 <div id="lightboxClose" onclick="closeLightbox()">✕</div>
 
@@ -220,7 +250,6 @@ section { min-height: 130vh; display: flex; flex-direction: column; justify-cont
 
 <div id="aboutOverlay">
     <div class="about-bar-bg"></div>
-    
     <div id="aboutClose" style="display: flex;" onclick="closeAll()">✕</div>
     <div class="about-links">
         
@@ -231,18 +260,22 @@ section { min-height: 130vh; display: flex; flex-direction: column; justify-cont
                     <div class="media-item">
                         <video src="marangoni.mp4" muted onclick="zoomMedia(this, 'video')" data-title="Marangoni"></video>
                         <span class="media-caption">Marangoni (2025)</span>
+                        <p class="media-description">Teaser Marangoni Scholarship — Beyond Dimension.</p>
                     </div>
                     <div class="media-item">
                         <video src="show reel.mp4" muted onclick="zoomMedia(this, 'video')" data-title="Show reel"></video>
                         <span class="media-caption">Show reel (2025)</span>
+                        <p class="media-description">Showreel — A Year of Visual Storytelling.</p>
                     </div>
                     <div class="media-item">
                         <video src="silent world.mp4" muted onclick="zoomMedia(this, 'video')" data-title="Silent World"></video>
                         <span class="media-caption">Silent World (2025)</span>
+                        <p class="media-description">Silent World — Lost in a quiet space.</p>
                     </div>
                     <div class="media-item">
                         <video src="avanguardia.mp4" muted onclick="zoomMedia(this, 'video')" data-title="Avanguardie cinematografiche"></video>
                         <span class="media-caption">Avanguardie cinematografiche (2023)</span>
+                        <p class="media-description">Old Cinema Style — Academic Project.</p>
                     </div>
                 </div>
             </div>
@@ -255,18 +288,22 @@ section { min-height: 130vh; display: flex; flex-direction: column; justify-cont
                     <div class="media-item">
                         <img src="marangoni foto 2.jpg" alt="Marangoni" onclick="zoomMedia(this, 'img')" data-title="Marangoni">
                         <span class="media-caption">Marangoni (2025)</span>
+                        <p class="media-description">Beyond Dimension — Marangoni Scholarship</p>
                     </div>
                     <div class="media-item">
                         <img src="food.JPEG" alt="Food Photography" onclick="zoomMedia(this, 'img')" data-title="Food Photography">
                         <span class="media-caption">Food Photography (2025)</span>
+                        <p class="media-description">Food Photography & Still Life.</p>
                     </div>
                     <div class="media-item">
                         <img src="lime.jpg" alt="Lime" onclick="zoomMedia(this, 'img')" data-title="Lime">
                         <span class="media-caption">Lime (2024)</span>
+                        <p class="media-description">Macro Details — Exploring the unseen.</p>
                     </div>
                     <div class="media-item">
                         <img src="beauty.jpg" alt="Beauty" onclick="zoomMedia(this, 'img')" data-title="Beauty">
                         <span class="media-caption">Beauty (2025)</span>
+                        <p class="media-description">Beauty & Light</p>
                     </div>
                 </div>
             </div>
@@ -279,18 +316,22 @@ section { min-height: 130vh; display: flex; flex-direction: column; justify-cont
                     <div class="media-item">
                         <img src="marangoni.jpg" alt="Marangoni" onclick="zoomMedia(this, 'img')" data-title="Marangoni">
                         <span class="media-caption">Marangoni Locandina (2025)</span>
+                        <p class="media-description">Beyond Dimension — Marangoni Scholarship.</p>
                     </div>
                     <div class="media-item">
                         <img src="ballooons.png" alt="Balloons" onclick="zoomMedia(this, 'img')" data-title="Balloons">
-                        <span class="media-caption">Balloons-Malika Favre (2024)</span>
+                        <span class="media-caption">Balloons (2024)</span>
+                        <p class="media-description">Balloons-A tribute to Malika Favre’s minimalism.</p>
                     </div>
                     <div class="media-item">
                         <img src="illustrazione.jpg" alt="Illustration" onclick="zoomMedia(this, 'img')" data-title="Illustration">
                         <span class="media-caption">Illustrazione (2026)</span>
+                        <p class="media-description">Beyond the Surface-Negative space and hidden volumes.</p>
                     </div>
                     <div class="media-item">
                         <img src="vip frame.jpg" alt="VIP Frame" onclick="zoomMedia(this, 'img')" data-title="VIP Frame">
                         <span class="media-caption">Vip Frame (2024)</span>
+                        <p class="media-description">Evan Peters-Hidden Features — The balance between space and identity.</p>
                     </div>
                 </div>
             </div>
@@ -332,6 +373,9 @@ section { min-height: 130vh; display: flex; flex-direction: column; justify-cont
 </section>
 
 <script>
+const logoImg = new Image();
+logoImg.src = 'logo.png';
+
 function togglePhotography() {
     const g = document.getElementById('photoGallery');
     g.classList.toggle('active');
@@ -458,11 +502,18 @@ let dotsP3 = []; let mouseP3 = { x: -1000, y: -1000 }; let p3Zoom = 1;
 function initP3() {
     p3Canvas.width = window.innerWidth; p3Canvas.height = window.innerHeight; dotsP3 = [];
     const tempCanvas = document.createElement('canvas'); const tempCtx = tempCanvas.getContext('2d');
+    let logoW = Math.min(p3Canvas.width * 0.6, 500);
+    let logoH = (logoImg.height / logoImg.width) * logoW;
     tempCanvas.width = p3Canvas.width; tempCanvas.height = p3Canvas.height;
-    tempCtx.font = `bold ${Math.min(tempCanvas.width*0.35, 450)}px Georgia, serif`; tempCtx.textAlign = 'center'; tempCtx.textBaseline = 'middle';
-    tempCtx.fillText('DG', tempCanvas.width / 2, tempCanvas.height / 2);
+    tempCtx.drawImage(logoImg, (tempCanvas.width - logoW)/2, (tempCanvas.height - logoH)/2, logoW, logoH);
     const imgData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height).data;
-    for (let y = 0; y < tempCanvas.height; y += 6) { for (let x = 0; x < tempCanvas.width; x += 6) { if (imgData[(y * tempCanvas.width + x) * 4 + 3] > 128) { dotsP3.push({ x: p3Canvas.width/2, y: p3Canvas.height/2, baseX: x, baseY: y, vx: 0, vy: 0, size: Math.random() * 2 + 1.8 }); } } }
+    for (let y = 0; y < tempCanvas.height; y += 5) { 
+        for (let x = 0; x < tempCanvas.width; x += 5) { 
+            if (imgData[(y * tempCanvas.width + x) * 4 + 3] > 128) { 
+                dotsP3.push({ x: p3Canvas.width/2, y: p3Canvas.height/2, baseX: x, baseY: y, vx: 0, vy: 0, size: Math.random() * 2 + 1.5 }); 
+            } 
+        } 
+    }
 }
 function animateP3() {
     if(!p3Canvas.classList.contains('active')) return; p3Ctx.fillStyle = 'rgba(0,0,0,0.85)'; p3Ctx.fillRect(0, 0, p3Canvas.width, p3Canvas.height);
@@ -503,10 +554,10 @@ class VectorLine3D{
         if(sc > 0){ ctx.strokeStyle = `rgba(255,255,255,${Math.min(1, (this.bright / 255) + 0.5)})`; ctx.lineWidth = 0.7 * sc; ctx.beginPath(); ctx.moveTo(xf * sc + particleCanvas.width / 2, y1 * sc + particleCanvas.height / 2); ctx.lineTo((xf + 0.5) * sc + particleCanvas.width / 2, (y1 + 0.5) * sc + particleCanvas.height / 2); ctx.stroke(); }
     }
 }
-const img = new Image(); img.crossOrigin = "Anonymous"; img.src = 'ritratto.png';
-img.onload = () => {
+const imgP2 = new Image(); imgP2.crossOrigin = "Anonymous"; imgP2.src = 'ritratto.png';
+imgP2.onload = () => {
     const tc = document.createElement('canvas'); const tctx = tc.getContext('2d'); tc.width = 400; tc.height = 400;
-    tctx.drawImage(img, 0, 0, 400, 400); const data = tctx.getImageData(0, 0, 400, 400).data;
+    tctx.drawImage(imgP2, 0, 0, 400, 400); const data = tctx.getImageData(0, 0, 400, 400).data;
     particles = []; const molt = window.innerWidth < 600 ? 1.6 : 3.2;
     for(let y = 0; y < 400; y += 4){ for(let x = 0; x < 400; x += 4){ const i = (y * 400 + x) * 4; if(data[i + 3] > 128) particles.push(new VectorLine3D((x - 200) * molt, (y - 200) * molt, (data[i] - 128) * 0.6, data[i])); } }
 };
